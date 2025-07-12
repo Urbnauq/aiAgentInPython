@@ -20,7 +20,3 @@ def get_files_info(working_directory, directory=None):
   
   except Exception as e:
     return f'Error: {e}'
-
-# working_directory = "calculator"
-# directory = "."
-# print(get_files_info(working_directory, directory))
