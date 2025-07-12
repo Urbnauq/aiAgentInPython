@@ -1,17 +1,26 @@
 import os
 
 def get_files_info(working_directory, directory=None):
-    full_path = os.path.join(working_directory, directory)
-    
-    try: 
-        if os.listdir(os.path.abspath(directory)) == os.listdir(f"../{full_path}"):
-          relative_path_directories = os.listdir(os.path.abspath(directory))
-          for dr in relative_path_directories:
-               print(f"- {dr}: file_size={os.path.getsize(dr)} bytes, is_dir={os.path.isdir(dr)}")
-    except Exception:
-            return f'Error: Cannot list "{directory}" as it is outside the permitted working directory'
+  try:
+    full_path = os.path.abspath(os.path.join(working_directory, directory))
+    dir_of_working_dir = os.listdir(full_path)
 
+    working_dir_path = os.path.abspath(working_directory)
+    if not full_path.startswith(working_dir_path):
+      return f'Error: Cannot list "{directory}" as it is outside the permitted working directory'
+
+    # results = "Result for current directory:" if directory == "." else f"Result for {directory} directory:"
     
-working_directory = "aiAgentInPython"
-directory = "calculator"
-print(get_files_info(working_directory, directory))
+    results = []
+    for dir in dir_of_working_dir:
+      dir_path = os.path.abspath(os.path.join(full_path, dir))
+      dir_is_dir = os.path.isdir(os.path.abspath(os.path.join(full_path, dir)))
+      results.append(f"- {dir}: file_size={os.path.getsize(dir_path)} bytes, is_dir={dir_is_dir}")
+    return "\n".join(results)
+  
+  except Exception as e:
+    return f'Error: {e}'
+
+# working_directory = "calculator"
+# directory = "."
+# print(get_files_info(working_directory, directory))
