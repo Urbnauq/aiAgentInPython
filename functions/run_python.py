@@ -26,19 +26,19 @@ def run_python_file(working_directory, file_path, args=[]):
 
         output = []
 
+        if complete_process.stdout == "":
+            return "No output produced."
+
         if complete_process.stdout:
             output.append(f'STDOUT: {complete_process.stdout}')
         if complete_process.stderr:
             output.append(f'STDERR: {complete_process.stderr}')
         
-        if complete_process.stdout == "":
-            return "No output produced."
-        
-        elif complete_process.returncode != 0:
+        if complete_process.returncode != 0:
             output.append(f"Process exited with code {complete_process.returncode}")
             return "\n".join(output)
-        else:
-            return "\n".join(output)
+        
+        return "\n".join(output)
         
     except Exception as e:
         print(f"Error: executing Python file: {e}")
