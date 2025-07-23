@@ -1,5 +1,6 @@
 import os
 import sys
+from prompts import system_prompt
 
 from dotenv import load_dotenv
 
@@ -29,7 +30,8 @@ def main():
 
     response = client.models.generate_content(
          model="gemini-2.0-flash-001", 
-         contents=messages, 
+         contents=messages,
+         config=types.GenerateContentConfig(system_instruction=system_prompt),
          )
 
     X = response.usage_metadata.prompt_token_count
