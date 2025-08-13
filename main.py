@@ -39,7 +39,7 @@ def main():
     X = response.usage_metadata.prompt_token_count
     Y = response.usage_metadata.candidates_token_count
     
-    if response.function_calls: #Fix this
+    if response.function_calls: #Fix this <<<<<<<<<<<<<------------------------------
        function_call_part = response.function_calls[0]
        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
     else:
