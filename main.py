@@ -1,6 +1,7 @@
 import os
 import sys
 from prompts import system_prompt
+from functions.get_files_info import available_functions
 
 from dotenv import load_dotenv
 
@@ -31,14 +32,19 @@ def main():
     response = client.models.generate_content(
          model="gemini-2.0-flash-001", 
          contents=messages,
-         config=types.GenerateContentConfig(system_instruction=system_prompt),
+         config=types.GenerateContentConfig(
+              tools=[available_functions], system_instruction=system_prompt),
          )
 
     X = response.usage_metadata.prompt_token_count
     Y = response.usage_metadata.candidates_token_count
     
-    print(f"Response: {response.text}")
-    
+    if response.function_calls: #Fix this
+       function_call_part = response.function_calls[0]
+       print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+    else:
+        print(f"Response: {response.text}")
+
     if len(prompt) > 1 and flags.get(prompt[1]) == "verbose":
         print(f"User prompt: {user_prompt}")
         print(f"Prompt tokens: {X}")
