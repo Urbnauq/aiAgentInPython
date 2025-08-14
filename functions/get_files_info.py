@@ -1,6 +1,4 @@
 import os
-from prompts import system_prompt
-
 from google.genai import types
 
 schema_get_files_info = types.FunctionDeclaration(
@@ -15,12 +13,6 @@ schema_get_files_info = types.FunctionDeclaration(
             ),
         },
     ),
-)
-
-available_functions = types.Tool(
-    function_declarations=[
-        schema_get_files_info,
-    ]
 )
 
 def get_files_info(working_directory, directory=None):

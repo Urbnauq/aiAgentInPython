@@ -1,7 +1,7 @@
 import os
 import sys
 from prompts import system_prompt
-from functions.get_files_info import available_functions
+from functions.available_functions import available_functions
 
 from dotenv import load_dotenv
 
@@ -39,11 +39,12 @@ def main():
     X = response.usage_metadata.prompt_token_count
     Y = response.usage_metadata.candidates_token_count
     
-    if response.function_calls: #Fix this <<<<<<<<<<<<<------------------------------
-       function_call_part = response.function_calls[0]
-       print(f"Calling function: {function_call_part.name}({function_call_part.args})")
-    else:
+    if response.text:
         print(f"Response: {response.text}")
+
+    if response.function_calls: #Fix this <<<<<<<<<<<<<------------------------------
+       for function_call_part in response.function_calls:
+        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
 
     if len(prompt) > 1 and flags.get(prompt[1]) == "verbose":
         print(f"User prompt: {user_prompt}")
