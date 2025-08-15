@@ -38,13 +38,12 @@ def main():
 
     X = response.usage_metadata.prompt_token_count
     Y = response.usage_metadata.candidates_token_count
-    
-    if response.text:
-        print(f"Response: {response.text}")
 
-    if response.function_calls: #Fix this <<<<<<<<<<<<<------------------------------
+    if response.function_calls: 
        for function_call_part in response.function_calls:
-        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+        print(f"Calling function: {function_call_part.name}({(function_call_part.args)})")
+    else:
+        print(f"Response: {response.text}")
 
     if len(prompt) > 1 and flags.get(prompt[1]) == "verbose":
         print(f"User prompt: {user_prompt}")
