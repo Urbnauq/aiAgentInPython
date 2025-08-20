@@ -2,6 +2,7 @@ import os
 import sys
 from prompts import system_prompt
 from functions.available_functions import available_functions
+from functions.call_function import call_function
 
 from dotenv import load_dotenv
 
@@ -39,9 +40,17 @@ def main():
     X = response.usage_metadata.prompt_token_count
     Y = response.usage_metadata.candidates_token_count
 
+    function_call_result = call_function
+
     if response.function_calls: 
        for function_call_part in response.function_calls:
-        print(f"Calling function: {function_call_part.name}({(function_call_part.args)})")
+        # print(f"Calling function: {function_call_part.name}({(function_call_part.args)})")
+        function_call_result = call_function(function_call_part)
+        if function_call_result.parts[0].function_response.response:
+            try:
+                print(f"-> {function_call_result.parts[0].function_response.response}")
+            except Exception as e:
+                print(e)
     else:
         print(f"Response: {response.text}")
 
